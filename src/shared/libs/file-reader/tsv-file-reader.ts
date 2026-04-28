@@ -19,9 +19,9 @@ export class TSVFileReader implements FileReader {
     }
 
     return this.rawData
-      .split('\n')
+      .split('\n') //TODO сивмол переноса строки для линукса
       .filter((row) => row.trim().length > 0)
-      .map((line) => line.split('\t'))
+      .map((line) => line.split('\t')) //TODO символ табуляции для линукса
       .map(([title, description, createdDate, image, type, price, categories, firstname, lastname, email, avatarPath]) => ({
         title,
         description,
