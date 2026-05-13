@@ -1,0 +1,129 @@
+{
+  "api": {
+    "titles": [
+      "Cozy studio near canal in Amsterdam",
+      "Spacious family house in Hamburg",
+      "Modern room close to museums in Paris",
+      "Quiet apartment near old town in Cologne",
+      "Central hotel studio in Brussels",
+      "Sunny apartment in Dusseldorf center",
+      "Stylish loft with river view",
+      "Comfortable apartment near central station"
+    ],
+    "descriptions": [
+      "Lightful studio with fast Wi-Fi, quiet courtyard and easy access to the city center.",
+      "A spacious house with a fully equipped kitchen, washer and plenty of space for a family stay.",
+      "Bright room in a renovated apartment with quick metro access and comfortable work corner.",
+      "A calm and clean apartment with good transport links and everything needed for a long weekend.",
+      "Compact hotel studio near the central square with daily breakfast and fast check-in.",
+      "Sunny apartment close to the river promenade, ideal for short stays and business trips."
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "previewImages": [
+      "https://static.example.com/images/offer/previews/preview-1.jpg",
+      "https://static.example.com/images/offer/previews/preview-2.jpg",
+      "https://static.example.com/images/offer/previews/preview-3.jpg",
+      "https://static.example.com/images/offer/previews/preview-4.jpg",
+      "https://static.example.com/images/offer/previews/preview-5.jpg",
+      "https://static.example.com/images/offer/previews/preview-6.jpg"
+    ],
+    "offerImages": [
+      "https://static.example.com/images/offer/photos/offer-1.jpg",
+      "https://static.example.com/images/offer/photos/offer-2.jpg",
+      "https://static.example.com/images/offer/photos/offer-3.jpg",
+      "https://static.example.com/images/offer/photos/offer-4.jpg",
+      "https://static.example.com/images/offer/photos/offer-5.jpg",
+      "https://static.example.com/images/offer/photos/offer-6.jpg",
+      "https://static.example.com/images/offer/photos/offer-7.jpg",
+      "https://static.example.com/images/offer/photos/offer-8.jpg"
+    ],
+    "housingTypes": [
+      "apartment",
+      "house",
+      "room",
+      "hotel"
+    ],
+    "amenities": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "users": [
+      "Maria Petrova",
+      "Alex Ivanov",
+      "Sophie Martin",
+      "Jonas Keller",
+      "Luc Dupont",
+      "Nina Vogt",
+      "Max Schaefer",
+      "Emma Laurent"
+    ],
+    "emails": [
+      "maria.pet@example.com",
+      "alex.ivanov@example.com",
+      "sophie.martin@example.com",
+      "jonas.keller@example.com",
+      "luc.dupont@example.com",
+      "nina.vogt@example.com",
+      "max.schaefer@example.com",
+      "emma.laurent@example.com"
+    ],
+    "avatars": [
+      "https://static.example.com/avatars/user-1.jpg",
+      "https://static.example.com/avatars/user-2.jpg",
+      "https://static.example.com/avatars/user-3.jpg",
+      "https://static.example.com/avatars/user-4.jpg",
+      "https://static.example.com/avatars/user-5.jpg",
+      "https://static.example.com/avatars/user-6.jpg"
+    ],
+    "passwords": [
+      "qwerty1",
+      "secret12",
+      "paris09",
+      "koln777",
+      "belgium",
+      "rhein88"
+    ],
+    "userTypes": [
+      "basic",
+      "pro"
+    ],
+    "cityCoordinates": {
+      "Paris": {
+        "latitude": 48.85661,
+        "longitude": 2.351499
+      },
+      "Cologne": {
+        "latitude": 50.938361,
+        "longitude": 6.959974
+      },
+      "Brussels": {
+        "latitude": 50.846557,
+        "longitude": 4.351697
+      },
+      "Amsterdam": {
+        "latitude": 52.370216,
+        "longitude": 4.895168
+      },
+      "Hamburg": {
+        "latitude": 53.550341,
+        "longitude": 10.000654
+      },
+      "Dusseldorf": {
+        "latitude": 51.225402,
+        "longitude": 6.776314
+      }
+    }
+  }
+}
