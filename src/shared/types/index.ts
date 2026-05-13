@@ -7,3 +7,5 @@ export * from './offer-images.type.js';
 export * from './city-type.enum.js';
 export * from './amenity-type.enum.js';
 export * from './housing-type.enum.js';
+export * from './mock-server-data.type.js';
+
