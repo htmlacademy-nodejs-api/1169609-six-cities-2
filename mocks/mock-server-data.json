@@ -44,7 +44,7 @@
       "https://static.example.com/images/offer/photos/offer-7.jpg",
       "https://static.example.com/images/offer/photos/offer-8.jpg"
     ],
-    "housingTypes": [
+    "housingCategories": [
       "apartment",
       "house",
       "room",
@@ -95,7 +95,7 @@
       "belgium",
       "rhein88"
     ],
-    "userTypes": [
+    "userRoles": [
       "basic",
       "pro"
     ],

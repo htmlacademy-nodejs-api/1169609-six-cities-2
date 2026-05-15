@@ -1,21 +1,23 @@
-import { Amenity } from './amenity-type.enum.js';
-import { City } from './city-type.enum.js';
-import { HousingType } from './housing-type.enum.js';
-import { Location } from './location.type.js';
-import { UserType } from './user-type.enum.js';
+import type {
+  Amenity,
+  City,
+  HousingCategory,
+  Location,
+  UserRole,
+} from './index.js';
 
-export type MockServerApiData = {
+export type MockServerData = {
   titles: string[];
   descriptions: string[];
   cities: City[];
   previewImages: string[];
   offerImages: string[];
-  housingTypes: HousingType[];
+  housingCategories: HousingCategory[];
   amenities: Amenity[];
   users: string[];
   emails: string[];
   avatars: string[];
   passwords: string[];
-  userTypes: UserType[];
+  userRoles: UserRole[];
   cityCoordinates: Record<City, Location>;
 };

@@ -3,12 +3,12 @@ import { readFileSync } from 'node:fs';
 import {
   Amenity,
   City,
-  HousingType,
+  HousingCategory,
   Location,
   Offer,
   OFFER_IMAGES_COUNT,
   OfferImages,
-  UserType,
+  UserRole,
 } from '../../types/index.js';
 
 function isEnumValue<T extends Record<string, string>>(
@@ -61,10 +61,10 @@ function parseAmenities(value: string): Amenity[] {
   return amenities;
 }
 
-function parseUserType(value: string): UserType {
+function parseUserRole(value: string): UserRole {
   const normalized = value.trim().toLowerCase();
-  if (!isEnumValue(UserType, normalized)) {
-    throw new Error(`Unknown userType: ${value}`);
+  if (!isEnumValue(UserRole, normalized)) {
+    throw new Error(`Unknown userRole: ${value}`);
   }
 
   return normalized;
@@ -100,16 +100,17 @@ export class TSVFileReader implements FileReader {
         isPremium,
         isFavorite,
         rating,
-        housingType,
+        housingCategory,
         rooms,
         guests,
         price,
         amenities,
-        authorName,
+        firstName,
+        lastName,
         authorEmail,
         authorAvatarPath,
         authorPassword,
-        authorType,
+        authorRole,
         commentsCount,
         latitude,
         longitude,
@@ -118,8 +119,8 @@ export class TSVFileReader implements FileReader {
           throw new Error(`Unknown city: ${city}`);
         }
 
-        if (!isEnumValue(HousingType, housingType)) {
-          throw new Error(`Unknown housingType: ${housingType}`);
+        if (!isEnumValue(HousingCategory, housingCategory)) {
+          throw new Error(`Unknown housingCategory: ${housingCategory}`);
         }
 
         const location: Location = {
@@ -137,17 +138,17 @@ export class TSVFileReader implements FileReader {
           isPremium: parseBoolean(isPremium),
           isFavorite: parseBoolean(isFavorite),
           rating: parseNumber(rating, 'rating'),
-          housingType,
+          housingCategory,
           rooms: parseNumber(rooms, 'rooms'),
           guests: parseNumber(guests, 'guests'),
           price: parseNumber(price, 'price'),
           amenities: parseAmenities(amenities),
           author: {
-            name: authorName,
+            name: `${firstName} ${lastName}`,
             email: authorEmail,
             avatarPath: authorAvatarPath || undefined,
             password: authorPassword,
-            userType: parseUserType(authorType),
+            userRole: parseUserRole(authorRole),
           },
           commentsCount: parseNumber(commentsCount, 'commentsCount'),
           location,
