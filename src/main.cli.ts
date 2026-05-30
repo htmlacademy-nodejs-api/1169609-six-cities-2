@@ -10,7 +10,7 @@ async function bootstrap() {
   const cliApplication = new CLIApplication();
 
   const importedCommands: Command[] = [];
-  const files = glob.sync('src/cli/commands/*.command.ts'); //TODO вынести путь в конфиг
+  const files = glob.sync('src/cli/commands/*.command.ts'); //TODO вынести путь в конфиг?
 
   for (const file of files) {
     const modulePath = resolve(file);
@@ -24,10 +24,6 @@ async function bootstrap() {
       }
     }
 
-    // if (typeof CommandClass === 'function') {
-    //   const commandInstance = new CommandClass();
-    //
-    // }
   }
 
   cliApplication.registerCommands(importedCommands);
