@@ -10,7 +10,7 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: true,
-    default: '',
+    minlength: [1, 'Min length for firstname is 1'],
   },
   email: {
     type: String,
