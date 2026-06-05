@@ -1,6 +1,10 @@
 import { defaultClasses, getModelForClass, prop } from '@typegoose/typegoose';
 import { User, UserRole } from '../../types/index.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface UserEntity extends defaultClasses.Base {}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true, minlength: [1, 'Min length for firstname is 1'] })
   public name: string;
