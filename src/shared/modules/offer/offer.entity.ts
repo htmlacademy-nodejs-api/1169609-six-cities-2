@@ -3,10 +3,10 @@ import { UserEntity } from '../user/user.entity.js';
 import { City, HousingCategory, Amenity, Location } from '../../types/index.js';
 
 class LocationStructure implements Location {
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   public latitude!: number;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   public longitude!: number;
 }
 
@@ -21,13 +21,13 @@ export interface OfferEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
-  @prop({ trim: true, required: true })
+  @prop({ trim: true, required: true, type: () => String })
   public title!: string;
 
-  @prop({ trim: true, required: true })
+  @prop({ trim: true, required: true, type: () => String })
   public description!: string;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Date })
   public postDate!: Date;
 
   @prop({
@@ -37,16 +37,16 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   })
   public city!: City;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => String })
   public previewImage!: string;
 
   @prop({ type: () => [String], required: true })
   public images!: string[];
 
-  @prop({ required: true, default: false })
+  @prop({ required: true, default: false, type: () => Boolean })
   public isPremium!: boolean;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   public rating!: number;
 
   @prop({
@@ -56,13 +56,13 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   })
   public housingCategory!: HousingCategory;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   public rooms!: number;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   public guests!: number;
 
-  @prop({ required: true })
+  @prop({ required: true, type: () => Number })
   public price!: number;
 
   @prop({ 
@@ -78,7 +78,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   })
   public userId!: Ref<UserEntity>;
 
-  @prop({ default: 0 })
+  @prop({ default: 0, type: () => Number })
   public commentsCount!: number;
 
   @prop({ 

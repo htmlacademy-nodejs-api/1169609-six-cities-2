@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { defaultClasses, getModelForClass, prop, modelOptions } from '@typegoose/typegoose';
 import { User, UserRole } from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
@@ -13,19 +14,19 @@ export interface UserEntity extends defaultClasses.Base {}
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends defaultClasses.TimeStamps implements User {
-  @prop({ required: true, default: '' })
+  @prop({ required: true, default: '', type: () => String })
   public name: string;
 
-  @prop({ required: true, unique: true })
+  @prop({ required: true, unique: true, type: () => String })
   public email: string;
 
-  @prop({ required: false, default: '' })
+  @prop({ required: false, default: 'avatar/default-avatar.jpg', type: () => String }) //TODO проверить адрес после запуска express.static
   public avatarPath?: string;
 
-  @prop({ required: true, default: '' })
-  private password?: string; //TODO 
+  @prop({ required: true, default: '', type: () => String })
+  private password: string;
 
-  @prop({ required: true, enum: UserRole })
+  @prop({ required: true, enum: UserRole, type: () => String })
   public userRole: UserRole;
 
   constructor(userData: User) {
