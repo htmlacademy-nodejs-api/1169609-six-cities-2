@@ -1,4 +1,4 @@
-import { UserRole } from "../../../types/index.js";
+import { UserRole } from '../../../types/index.js';
 
 export class CreateUserDto {
   public name: string;

@@ -36,5 +36,5 @@ export class DefaultUserService implements UserService {
 
     return this.create(dto, salt);
   }
-  
+
 }

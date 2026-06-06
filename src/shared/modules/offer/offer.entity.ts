@@ -1,5 +1,5 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, PropType, Ref } from '@typegoose/typegoose';
-import { UserEntity } from '../user/user.entity.js'; 
+import { UserEntity } from '../user/user.entity.js';
 import { City, HousingCategory, Amenity, Location } from '../../types/index.js';
 
 class LocationStructure implements Location {
@@ -65,11 +65,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, type: () => Number })
   public price!: number;
 
-  @prop({ 
-    type: () => String, 
-    enum: Amenity, 
+  @prop({
+    type: () => String,
+    enum: Amenity,
     required: true
-   }, PropType.ARRAY)
+  }, PropType.ARRAY)
   public amenities!: Amenity[];
 
   @prop({
@@ -81,9 +81,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ default: 0, type: () => Number })
   public commentsCount!: number;
 
-  @prop({ 
-    type: () => LocationStructure, 
-    required: true, 
+  @prop({
+    type: () => LocationStructure,
+    required: true,
     _id: false })
   public location!: LocationStructure;
 }
