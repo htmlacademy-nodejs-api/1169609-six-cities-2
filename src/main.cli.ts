@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable node/no-unsupported-features/es-syntax */
+import 'reflect-metadata';
 import { CLIApplication } from './cli/index.js';
 import { glob } from 'glob';
 import { Command } from './cli/commands/command.interface.js';
@@ -10,7 +11,7 @@ async function bootstrap() {
   const cliApplication = new CLIApplication();
 
   const importedCommands: Command[] = [];
-  const files = glob.sync('src/cli/commands/*.command.ts'); //TODO вынести путь в конфиг?
+  const files = glob.sync('src/cli/commands/*.command.ts');
 
   for (const file of files) {
     const modulePath = resolve(file);

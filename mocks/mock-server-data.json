@@ -87,14 +87,6 @@
       "https://static.example.com/avatars/user-5.jpg",
       "https://static.example.com/avatars/user-6.jpg"
     ],
-    "passwords": [
-      "qwerty1",
-      "secret12",
-      "paris09",
-      "koln777",
-      "belgium",
-      "rhein88"
-    ],
     "userRoles": [
       "basic",
       "pro"

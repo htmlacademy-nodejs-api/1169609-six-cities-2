@@ -50,7 +50,6 @@ export class TSVOfferGenerator implements OfferGenerator {
     const [firstName, lastName] = authorName.split(' ');
     const authorEmail = getRandomItem(this.mockData.emails);
     const authorAvatarPath = getRandomItem(this.mockData.avatars);
-    const authorPassword = getRandomItem(this.mockData.passwords);
     const authorRole = getRandomItem(this.mockData.userRoles);
 
     const commentsCount = String(Math.floor(generateRandomValue(0, 200)));
@@ -75,7 +74,6 @@ export class TSVOfferGenerator implements OfferGenerator {
       lastName,
       authorEmail,
       authorAvatarPath,
-      authorPassword,
       authorRole,
       commentsCount,
       String(latitude),
