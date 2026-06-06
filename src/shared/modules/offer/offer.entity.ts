@@ -1,4 +1,4 @@
-import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
+import { defaultClasses, getModelForClass, modelOptions, prop, PropType, Ref } from '@typegoose/typegoose';
 import { UserEntity } from '../user/user.entity.js'; 
 import { City, HousingCategory, Amenity, Location } from '../../types/index.js';
 
@@ -40,13 +40,13 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, type: () => String })
   public previewImage!: string;
 
-  @prop({ type: () => [String], required: true })
+  @prop({ type: () => String, required: true }, PropType.ARRAY)
   public images!: string[];
 
   @prop({ required: true, default: false, type: () => Boolean })
   public isPremium!: boolean;
 
-  @prop({ required: true, type: () => Number })
+  @prop({ required: true, type: () => Number, default: 0})
   public rating!: number;
 
   @prop({
@@ -66,10 +66,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public price!: number;
 
   @prop({ 
-    type: () => [String], 
+    type: () => String, 
     enum: Amenity, 
     required: true
-   })
+   }, PropType.ARRAY)
   public amenities!: Amenity[];
 
   @prop({
