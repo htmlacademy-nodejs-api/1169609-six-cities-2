@@ -17,21 +17,300 @@ tags:
   - name: favorites
     description: Действия с избранными предложениями.
 paths:
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Список предложений по аренде
+      description: Возвращает отсортированный список предложений по аренде.
+      parameters:
+        - name: limit
+          in: query
+          description: Количество предложений в ответе.
+          schema:
+            type: integer
+            default: 60
+            minimum: 1
+      responses:
+        "200":
+          description: Список предложений.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offerListItem'
+
+    post:
+      tags:
+        - offers
+      summary: Создание предложения
+      description: Создаёт новое предложение по аренде.
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "201":
+          description: Предложение создано. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Некорректные данные предложения.
+
+  /offers/premium:
+    get:
+      tags:
+        - offers
+      summary: Премиальные предложения для города
+      description: Возвращает список премиальных предложений для города.
+      parameters:
+        - name: city
+          in: query
+          required: true
+          description: Город для выборки премиальных предложений.
+          schema:
+            type: string
+            enum:
+              - Paris
+              - Cologne
+              - Brussels
+              - Amsterdam
+              - Hamburg
+              - Dusseldorf
+            example: Paris
+      responses:
+        "200":
+          description: Список премиальных предложений.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offerListItem'
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Детальная информация по предложению
+      description: Возвращает детальную информацию по предложению.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      responses:
+        "200":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "404":
+          description: Предложение не найдено.
+
+    patch:
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: Обновляет предложение по аренде.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      requestBody:
+        description: Обновлённая информация по предложению.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "200":
+          description: Предложение обновлено. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Некорректные данные предложения.
+
+        "403":
+          description: Нет прав на редактирование предложения.
+
+        "404":
+          description: Предложение не найдено.
+
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения
+      description: Удаляет предложение по аренде.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      responses:
+        "204":
+          description: Предложение удалено.
+
+        "403":
+          description: Нет прав на удаление предложения.
+
+        "404":
+          description: Предложение не найдено.
+
+  /offers/{offerId}/comments:
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения
+      description: Возвращает список комментариев для предложения.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      responses:
+        "200":
+          description: Список комментариев.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        "404":
+          description: Предложение не найдено.
+
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария
+      description: Добавляет комментарий к предложению.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      requestBody:
+        description: Информация для создания нового комментария.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+      responses:
+        "201":
+          description: Комментарий создан. Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        "400":
+          description: Некорректные данные комментария.
+
+        "404":
+          description: Предложение не найдено.
+
+  /favorite:
+    get:
+      tags:
+        - favorites
+      summary: Список избранных предложений
+      description: Возвращает список избранных предложений.
+      responses:
+        "200":
+          description: Список избранных предложений.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offerListItem'
+
+  /favorite/{offerId}:
+    post:
+      tags:
+        - favorites
+      summary: Добавление в избранное
+      description: Добавляет предложение в избранное.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      responses:
+        "200":
+          description: Предложение добавлено в избранное.
+
+        "404":
+          description: Предложение не найдено.
+
+    delete:
+      tags:
+        - favorites
+      summary: Удаление из избранного
+      description: Удаляет предложение из избранного.
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          description: Идентификатор предложения.
+          schema:
+            type: string
+            example: 6329c3d6a04ab1061c6425ea
+      responses:
+        "204":
+          description: Предложение удалено из избранного.
+
+        "404":
+          description: Предложение не найдено.
+
   /users/register:
     post:
       tags:
         - users
       summary: Регистрация пользователя
       description: Регистрирует нового пользователя.
-
-        requestBody:
+      requestBody:
         description: Информация для создания нового пользователя.
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/createUser'
         required: true
-
       responses:
         "201":
           description: Пользователь зарегистрирован. Объект пользователя.
@@ -49,22 +328,41 @@ paths:
         - users
       summary: Авторизация пользователя
       description: Авторизует пользователя на основе логина и пароля
+      requestBody:
+        description: Данные для входа в приложение.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createLogin'
+        required: true
+      responses:
+        "200":
+          description: Пользователь авторизован. Токен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/token'
+
+        "401":
+          description: Неверный email или пароль.
 
     get:
       tags:
         - users
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
+      responses:
+        "200":
+          description: Пользователь авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
 
-  /users/{userId}/avatar:
-    post:
-      tags:
-        - users
-      summary: Загрузить изображение аватара
-      description: Загружает изображение аватара пользователя. Изображение
-        аватара должно быть в формате `png` или `jpg`.
+        "401":
+          description: Пользователь не авторизован.
 
-        components:
+components:
   schemas:
     createUser:
       type: object
@@ -97,3 +395,274 @@ paths:
         email:
           type: string
           example: keks@htmlacademy.ru
+
+    createLogin:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: 123456
+
+    token:
+      type: object
+
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+    createOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: Пентхаус с видом на Неву
+
+        description:
+          type: string
+          example: Роскошный пентхаус с панорамным видом на Неву и исторический центр города.
+
+        city:
+          type: string
+          example: Paris
+
+        previewImage:
+          type: string
+          example: preview.jpg
+
+        images:
+          type: array
+          example:
+            - photo1.jpg
+            - photo2.jpg
+            - photo3.jpg
+            - photo4.jpg
+            - photo5.jpg
+            - photo6.jpg
+          items:
+            type: string
+
+        isPremium:
+          type: boolean
+          example: false
+
+        housingCategory:
+          type: string
+          example: apartment
+
+        rooms:
+          type: integer
+          example: 3
+
+        guests:
+          type: integer
+          example: 4
+
+        price:
+          type: integer
+          example: 12000
+
+        amenities:
+          type: array
+          example:
+            - Breakfast
+            - Air conditioning
+          items:
+            type: string
+
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 48.85661
+
+            longitude:
+              type: number
+              example: 2.351499
+
+    offer:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        title:
+          type: string
+          example: Пентхаус с видом на Неву
+
+        description:
+          type: string
+          example: Роскошный пентхаус с панорамным видом на Неву и исторический центр города.
+
+        postDate:
+          type: string
+          format: date-time
+          example: 2022-09-29T04:05:06.785Z
+
+        city:
+          type: string
+          example: Paris
+
+        previewImage:
+          type: string
+          example: preview.jpg
+
+        images:
+          type: array
+          example:
+            - photo1.jpg
+            - photo2.jpg
+            - photo3.jpg
+            - photo4.jpg
+            - photo5.jpg
+            - photo6.jpg
+          items:
+            type: string
+
+        isPremium:
+          type: boolean
+          example: false
+
+        isFavorite:
+          type: boolean
+          example: false
+
+        rating:
+          type: number
+          example: 4.5
+
+        housingCategory:
+          type: string
+          example: apartment
+
+        rooms:
+          type: integer
+          example: 3
+
+        guests:
+          type: integer
+          example: 4
+
+        price:
+          type: integer
+          example: 12000
+
+        amenities:
+          type: array
+          example:
+            - Breakfast
+            - Air conditioning
+          items:
+            type: string
+
+        author:
+          $ref: '#/components/schemas/user'
+
+        commentsCount:
+          type: integer
+          example: 2
+
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 48.85661
+
+            longitude:
+              type: number
+              example: 2.351499
+
+    offerListItem:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        title:
+          type: string
+          example: Пентхаус с видом на Неву
+
+        postDate:
+          type: string
+          format: date-time
+          example: 2022-09-29T04:05:06.785Z
+
+        city:
+          type: string
+          example: Paris
+
+        previewImage:
+          type: string
+          example: preview.jpg
+
+        isPremium:
+          type: boolean
+          example: false
+
+        isFavorite:
+          type: boolean
+          example: false
+
+        rating:
+          type: number
+          example: 4.5
+
+        housingCategory:
+          type: string
+          example: apartment
+
+        price:
+          type: integer
+          example: 12000
+
+        commentsCount:
+          type: integer
+          example: 2
+
+    createComment:
+      type: object
+
+      properties:
+        text:
+          type: string
+          example: Отличное жильё, всё понравилось!
+
+        rating:
+          type: integer
+          example: 5
+
+    comment:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        text:
+          type: string
+          example: Отличное жильё, всё понравилось!
+
+        postDate:
+          type: string
+          format: date-time
+          example: 2022-09-29T04:05:06.785Z
+
+        rating:
+          type: integer
+          example: 5
+
+        author:
+          $ref: '#/components/schemas/user'
