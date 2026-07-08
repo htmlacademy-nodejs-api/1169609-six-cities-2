@@ -6,16 +6,16 @@ import { City } from '../../types/index.js';
 
 export interface OfferService {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
-  findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  find(count?: number): Promise<DocumentType<OfferEntity>[]>;
+  findById(offerId: string, userId?: string): Promise<DocumentType<OfferEntity> | null>;
+  find(count?: number, userId?: string): Promise<DocumentType<OfferEntity>[]>;
 
   deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
 
-  findByCity(city: City, count?: number): Promise<DocumentType<OfferEntity>[]>;
-  findPremiumByCity(city: City): Promise<DocumentType<OfferEntity>[]>;
-  findNew(count: number): Promise<DocumentType<OfferEntity>[]>;
-  findDiscussed(count: number): Promise<DocumentType<OfferEntity>[]>;
+  findByCity(city: City, count?: number, userId?: string): Promise<DocumentType<OfferEntity>[]>;
+  findPremiumByCity(city: City, userId?: string): Promise<DocumentType<OfferEntity>[]>;
+  findNew(count: number, userId?: string): Promise<DocumentType<OfferEntity>[]>;
+  findDiscussed(count: number, userId?: string): Promise<DocumentType<OfferEntity>[]>;
 
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   updateRating(offerId: string): Promise<DocumentType<OfferEntity> | null>;
