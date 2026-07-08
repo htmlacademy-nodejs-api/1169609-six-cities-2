@@ -100,7 +100,38 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async updateRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel.findById(offerId).exec();
+    const aggregationResult = await this.offerModel.aggregate<{ rating: number }>([
+      { $match: { _id: offerId } },
+      {
+        $lookup: {
+          from: 'comments',
+          let: { offerId: '$_id' },
+          pipeline: [
+            { $match: { $expr: { $eq: ['$offerId', '$$offerId'] } } },
+            { $project: { rating: 1 } },
+          ],
+          as: 'comments',
+        },
+      },
+      {
+        $addFields: {
+          rating: {
+            $round: [{ $ifNull: [{ $avg: '$comments.rating' }, 0] }, 1],
+          },
+        },
+      },
+      {
+        $project: {
+          rating: 1,
+        },
+      },
+    ]).exec();
+
+    const rating = aggregationResult[0]?.rating ?? 0;
+
+    return this.offerModel
+      .findByIdAndUpdate(offerId, { rating }, { new: true })
+      .exec();
   }
 
   public async exists(offerId: string): Promise<boolean> {
