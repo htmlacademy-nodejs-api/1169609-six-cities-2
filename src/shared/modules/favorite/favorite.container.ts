@@ -12,7 +12,7 @@ export function createFavoriteContainer() {
     .to(DefaultFavoriteService)
     .inSingletonScope();
 
-    favoriteContainer.bind<types.ModelType<FavoriteEntity>>(Component.FavoriteModel)
+  favoriteContainer.bind<types.ModelType<FavoriteEntity>>(Component.FavoriteModel)
     .toConstantValue(FavoriteModel);
 
   return favoriteContainer;
