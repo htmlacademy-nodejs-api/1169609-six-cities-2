@@ -6,6 +6,51 @@ Content-Type: application/json
 
 ###
 
+### Получить предложения с limit
+
+GET http://localhost:5000/offers?limit=5 HTTP/1.1
+Content-Type: application/json
+
+###
+
+### Получить премиальные предложения для города
+
+GET http://localhost:5000/offers/premium?city=Paris HTTP/1.1
+Content-Type: application/json
+
+###
+
+### Получить предложение по id (подставь id из GET /offers)
+
+GET http://localhost:5000/offers/6a2482b5af8313f6e1dd21c0 HTTP/1.1
+Content-Type: application/json
+
+###
+
+### Предложение не найдено (404)
+
+GET http://localhost:5000/offers/000000000000000000000000 HTTP/1.1
+Content-Type: application/json
+
+###
+
+### Обновить предложение (подставь id из GET /offers)
+
+PATCH http://localhost:5000/offers/6a2482b5af8313f6e1dd21c0 HTTP/1.1
+Content-Type: application/json
+
+{
+  "price": 10000
+}
+
+###
+
+### Удалить предложение (подставь id из GET /offers)
+
+DELETE http://localhost:5000/offers/6a58cab9f2ee2f80fe9cebfe HTTP/1.1
+
+###
+
 ### Добавить новое предложение
 
 POST http://localhost:5000/offers HTTP/1.1

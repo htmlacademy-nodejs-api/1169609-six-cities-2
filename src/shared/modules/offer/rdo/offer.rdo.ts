@@ -3,7 +3,7 @@ import { Amenity, City, HousingCategory } from '../../../types/index.js';
 
 class OfferAuthorRdo {
   @Expose({ name: 'id' })
-  @Transform(({ obj }) => obj._id.toString())
+  @Transform(({ obj }) => obj._id.toString(), { toClassOnly: true })
   public id!: string;
 
   @Expose()
@@ -18,7 +18,7 @@ class OfferLocationRdo {
 }
 export class OfferRdo {
   @Expose({ name: 'id' })
-  @Transform(({ obj }) => obj._id.toString())
+  @Transform(({ obj }) => obj._id.toString(), { toClassOnly: true })
   public id!: string;
 
   @Expose()
@@ -64,8 +64,18 @@ export class OfferRdo {
   public amenities!: Amenity[];
 
   @Expose()
-  @Type(() => OfferAuthorRdo)
-  @Transform(({ obj }) => obj.userId)
+  @Transform(({ obj }) => {
+    const user = obj.userId;
+
+    if (!user || typeof user !== 'object') {
+      return undefined;
+    }
+
+    return {
+      id: user._id.toString(),
+      email: user.email,
+    };
+  }, { toClassOnly: true })
   public author!: OfferAuthorRdo;
 
   @Expose()

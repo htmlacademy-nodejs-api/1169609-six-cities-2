@@ -3,7 +3,7 @@ import { City, HousingCategory } from '../../../types/index.js';
 
 export class OfferListRdo {
   @Expose({ name: 'id' })
-  @Transform(({ obj }) => obj._id.toString())
+  @Transform(({ obj }) => obj._id.toString(), { toClassOnly: true })
   public id!: string;
 
   @Expose()
