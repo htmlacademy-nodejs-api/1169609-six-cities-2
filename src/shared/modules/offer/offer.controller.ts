@@ -6,6 +6,8 @@ import { Component } from '../../types/index.js';
 import { OfferService } from './offer-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
 import { OfferListRdo } from './rdo/offer-list.rdo.js';
+import { OfferRdo } from './rdo/offer.rdo.js';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -27,7 +29,11 @@ export class OfferController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public create(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async create(
+    { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+    res: Response,
+  ): Promise<void> {
+    const result = await this.offerService.create(body);
+    this.created(res, fillDTO(OfferRdo, result));
   }
 }
