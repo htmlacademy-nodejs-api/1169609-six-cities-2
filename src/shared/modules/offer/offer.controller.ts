@@ -10,6 +10,7 @@ import { OfferListRdo } from './rdo/offer-list.rdo.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
 import { CreateOfferRequest } from './create-offer-request.type.js';
 import { UpdateOfferRequest } from './update-offer-request.type.js';
+import { ParamOfferId } from './type/param-offerid.type.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -43,10 +44,10 @@ export class OfferController extends BaseController {
   }
 
   public async show(
-    { params }: Request,
+    { params }: Request<ParamOfferId>,
     res: Response,
   ): Promise<void> {
-    const offerId = String(params.offerId);
+    const { offerId } = params;
     const offer = await this.offerService.findById(offerId);
 
     if (!offer) {
@@ -64,7 +65,7 @@ export class OfferController extends BaseController {
     { params, body }: UpdateOfferRequest,
     res: Response,
   ): Promise<void> {
-    const offerId = String(params.offerId);
+    const { offerId } = params;
     const offer = await this.offerService.updateById(offerId, body);
 
     if (!offer) {
@@ -79,10 +80,10 @@ export class OfferController extends BaseController {
   }
 
   public async delete(
-    { params }: Request,
+    { params }: Request<ParamOfferId>,
     res: Response,
   ): Promise<void> {
-    const offerId = String(params.offerId);
+    const { offerId } = params;
     const offer = await this.offerService.deleteById(offerId);
 
     if (!offer) {
