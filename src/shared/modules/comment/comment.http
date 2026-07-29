@@ -1,0 +1,22 @@
+# Комментарии
+
+### Получить список комментариев для предложения (подставь id из GET /offers)
+
+GET http://localhost:5000/comments/6a4c0effe5f3dbf7ced2aa44 HTTP/1.1
+Content-Type: application/json
+
+###
+
+### Создать комментарий (подставь offerId и userId из своей БД)
+
+POST http://localhost:5000/comments HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "Отличная квартира, всё как на фото. Рекомендую!",
+  "rating": 5,
+  "offerId": "6a4c0effe5f3dbf7ced2aa44",
+  "userId": "6a23430859ddf6a46ee12e48"
+}
+
+###
