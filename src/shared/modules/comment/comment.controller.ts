@@ -1,12 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { BaseController, HttpError, HttpMethod } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { CommentService } from './comment-service.interface.js';
 import { OfferService } from '../offer/index.js';
-import { ParamOfferId } from '../offer/type/param-offerid.type.js';
 import { fillDTO } from '../../helpers/index.js';
 import { CommentRdo } from './rdo/comment.rdo.js';
 import { CreateCommentRequest } from './types/create-comment-request.type.js';
@@ -21,26 +20,7 @@ export class CommentController extends BaseController {
     super(logger);
 
     this.logger.info('Register routes for CommentController…');
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
-  }
-
-  public async index(
-    { params }: Request<ParamOfferId>,
-    res: Response,
-  ): Promise<void> {
-    const { offerId } = params;
-
-    if (!await this.offerService.exists(offerId)) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer with id «${offerId}» not found.`,
-        'CommentController',
-      );
-    }
-
-    const comments = await this.commentService.findByOfferId(offerId);
-    this.ok(res, fillDTO(CommentRdo, comments));
   }
 
   public async create(
