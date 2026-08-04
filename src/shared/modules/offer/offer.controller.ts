@@ -5,6 +5,7 @@ import { BaseController,
   HttpError,
   HttpMethod,
   ValidateObjectIdMiddleware,
+  DocumentExistsMiddleware,
   ValidateDtoMiddleware,
 } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
@@ -64,7 +65,10 @@ export class OfferController extends BaseController {
       path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getComments,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+      ]
     });
   }
 
