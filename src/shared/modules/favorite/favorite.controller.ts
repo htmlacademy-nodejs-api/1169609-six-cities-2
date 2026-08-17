@@ -1,7 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import { BaseController, HttpError, HttpMethod, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
+import { BaseController, DocumentExistsMiddleware, HttpMethod, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
 import { FavoriteService } from './favorite-service.interface.js';
@@ -26,13 +25,19 @@ export class FavoriteController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+      ],
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+      ],
     });
   }
 
@@ -46,15 +51,6 @@ export class FavoriteController extends BaseController {
     res: Response,
   ): Promise<void> {
     const offerId = String(params.offerId);
-
-    if (!await this.offerService.exists(offerId)) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer with id «${offerId}» not found.`,
-        'FavoriteController',
-      );
-    }
-
     await this.favoriteService.add(this.testUserId, offerId);
     this.ok(res, {});
   }
@@ -64,15 +60,6 @@ export class FavoriteController extends BaseController {
     res: Response,
   ): Promise<void> {
     const offerId = String(params.offerId);
-
-    if (!await this.offerService.exists(offerId)) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer with id «${offerId}» not found.`,
-        'FavoriteController',
-      );
-    }
-
     await this.favoriteService.delete(this.testUserId, offerId);
     this.noContent(res, undefined);
   }

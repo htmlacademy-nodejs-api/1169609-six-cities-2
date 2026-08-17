@@ -21,7 +21,7 @@ export class DefaultUserService implements UserService {
     const result = await this.userModel.create(user);
     this.logger.info(`New user created: ${user.email}`);
 
-    return result;
+    return result; //TODO ошибки по тайпскрипту
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
@@ -42,6 +42,10 @@ export class DefaultUserService implements UserService {
     return this.userModel
       .findByIdAndUpdate(userId, dto, { new: true })
       .exec();
+  }
+
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.userModel.exists({ _id: documentId })) !== null;
   }
 
 }
