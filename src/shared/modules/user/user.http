@@ -24,3 +24,17 @@ Content-Type: application/json
 }
 
 ###
+
+## Отправить изображение
+
+POST http://localhost:5000/users/6a1f39d0aef623ff9c46567b/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="screen.png"
+Content-Type: image/png
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/avatar-angelina.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
