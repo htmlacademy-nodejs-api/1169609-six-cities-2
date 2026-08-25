@@ -4,7 +4,6 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsMongoId,
   IsObject,
   IsString,
   Max,
@@ -71,7 +70,6 @@ export class CreateOfferDto {
   @IsEnum(Amenity, { each: true, message: CreateOfferValidationMessage.amenities.invalid })
   public amenities!: Amenity[];
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId!: string;
 
   @IsObject({ message: CreateOfferValidationMessage.location.invalidFormat })

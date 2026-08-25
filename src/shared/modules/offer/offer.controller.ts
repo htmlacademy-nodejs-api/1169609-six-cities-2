@@ -5,6 +5,7 @@ import { BaseController,
   ValidateObjectIdMiddleware,
   DocumentExistsMiddleware,
   ValidateDtoMiddleware,
+  PrivateRouteMiddleware,
 } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { City, Component } from '../../types/index.js';
@@ -46,6 +47,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
@@ -56,6 +58,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
@@ -64,7 +67,9 @@ export class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)],
     });
     this.addRoute({
       path: '/:offerId/comments',
@@ -77,25 +82,25 @@ export class OfferController extends BaseController {
     });
   }
 
-  public async index({ query }: Request, res: Response): Promise<void> {
+  public async index({ query, tokenPayload }: Request, res: Response): Promise<void> {
     const limit = query.limit ? Number(query.limit) : undefined;
-    const offers = await this.offerService.find(limit);
+    const offers = await this.offerService.find(limit, tokenPayload?.id);
     const responseData = fillDTO(OfferListRdo, offers);
     this.ok(res, responseData);
   }
 
-  public async premium({ query }: Request, res: Response): Promise<void> {
+  public async premium({ query, tokenPayload }: Request, res: Response): Promise<void> {
     const city = query.city as City;
-    const offers = await this.offerService.findPremiumByCity(city);
+    const offers = await this.offerService.findPremiumByCity(city, tokenPayload?.id);
     this.ok(res, fillDTO(OfferListRdo, offers));
   }
 
   public async show(
-    { params }: Request<ParamOfferId>,
+    { params, tokenPayload }: Request<ParamOfferId>,
     res: Response,
   ): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.findById(offerId);
+    const offer = await this.offerService.findById(offerId, tokenPayload?.id);
 
 
     this.ok(res, fillDTO(OfferRdo, offer));
@@ -123,12 +128,10 @@ export class OfferController extends BaseController {
     this.noContent(res, undefined);
   }
 
-  public async create(
-    { body }: CreateOfferRequest,
-    res: Response,
-  ): Promise<void> {
-    const result = await this.offerService.create(body);
-    this.created(res, fillDTO(OfferRdo, result));
+  public async create({ body, tokenPayload }: CreateOfferRequest, res: Response): Promise<void> {
+    const result = await this.offerService.create({ ...body, userId: tokenPayload.id });
+    const offer = await this.offerService.findById(result.id, tokenPayload.id);
+    this.created(res, fillDTO(OfferRdo, offer));
   }
 
   public async getComments({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
