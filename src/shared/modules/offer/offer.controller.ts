@@ -128,12 +128,10 @@ export class OfferController extends BaseController {
     this.noContent(res, undefined);
   }
 
-  public async create(
-    { body }: CreateOfferRequest,
-    res: Response,
-  ): Promise<void> {
-    const result = await this.offerService.create(body);
-    this.created(res, fillDTO(OfferRdo, result));
+  public async create({ body, tokenPayload }: CreateOfferRequest, res: Response): Promise<void> {
+    const result = await this.offerService.create({ ...body, userId: tokenPayload.id });
+    const offer = await this.offerService.findById(result.id);
+    this.created(res, fillDTO(OfferRdo, offer));
   }
 
   public async getComments({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
