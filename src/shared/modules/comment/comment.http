@@ -7,8 +7,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3MyMjJAZXhhbXBsZS5jb20iLCJuYW1lIjoiS2VrcyIsImlkIjoiNmE1OTNmZDE2OTQyMTU5YmI3YmM1NDFlIiwiaWF0IjoxNzg3Njg3Mjg4LCJleHAiOjE3ODc4NjAwODh9.T6wuhlQhQaVqhHzS49oRmchT1_a67UkUrx6HTeR0XjE
 
 {
-  "text": "Нормальная квартира.",
-  "rating": 4,
+  "text": "Нормально все",
+  "rating": 3,
   "offerId": "6a2351f5e83de56a6637136f"
 }
 
