@@ -13,3 +13,4 @@ export * from './middleware/validate-dto.middleware.js';
 export * from './middleware/document-exists.middleware.js';
 export * from './middleware/upload-file.middleware.js';
 export * from './middleware/private-route.middleware.js';
+export * from './types/validation-error-field.type.js';
