@@ -1,9 +1,7 @@
 import {
   IsEmail,
   IsEnum,
-  IsOptional,
   IsString,
-  Matches,
   MaxLength,
   MinLength
 } from 'class-validator';
@@ -18,11 +16,6 @@ export class CreateUserDto {
 
   @IsEmail({}, { message: CreateUserMessages.email.invalidFormat })
   public email!: string;
-
-  @IsOptional()
-  @IsString({ message: CreateUserMessages.avatarPath.invalidFormat })
-  @Matches(/\.(jpg|png)$/i, { message: CreateUserMessages.avatarPath.invalidFormat })
-  public avatarPath?: string;
 
   @IsString({ message: CreateUserMessages.password.invalidFormat })
   @MinLength(6, { message: CreateUserMessages.password.lengthField })
