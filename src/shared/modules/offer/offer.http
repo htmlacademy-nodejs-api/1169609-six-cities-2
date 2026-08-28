@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ### Получить предложение по id (подставь id из GET /offers)
 
-GET http://localhost:5000/offers/6a4c0effe5f3dbf7ced2aa44 HTTP/1.1
+GET http://localhost:5000/offers/6a91e84398a9bdef7ad652b9 HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -52,31 +52,77 @@ DELETE http://localhost:5000/offers/6a58cab9f2ee2f80fe9cebfe HTTP/1.1
 ###
 
 ### Добавить новое предложение
-
 POST http://localhost:5000/offers HTTP/1.1
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3MyMjJAZXhhbXBsZS5jb20iLCJuYW1lIjoiS2VrcyIsImlkIjoiNmE1OTNmZDE2OTQyMTU5YmI3YmM1NDFlIiwiaWF0IjoxNzg3OTQ2Njc0LCJleHAiOjE3ODgxMTk0NzR9.4Zz2OjO9Z0Q_Aw0K7GR9YpGlDWiwW_VYyHRn4gQFAdE
 {
   "title": "Пентхаус с видом на Неву",
   "description": "Роскошный пентхаус с панорамным видом на Неву и исторический центр города.",
   "postDate": "2022-09-29T04:05:06.785Z",
   "city": "Paris",
-  "previewImage": "preview.jpg",
-  "images": ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"],
   "isPremium": false,
   "housingCategory": "apartment",
   "rooms": 3,
   "guests": 4,
   "price": 12000,
   "amenities": ["Breakfast", "Air conditioning"],
-  "userId": "6a23430859ddf6a46ee12e48",
   "location": {
     "latitude": 48.85661,
     "longitude": 2.351499
   }
 }
-
 ###
+
+### Загрузить превью (подставь id из ответа create)
+POST http://localhost:5000/offers/6a91e84398a9bdef7ad652b9/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3MyMjJAZXhhbXBsZS5jb20iLCJuYW1lIjoiS2VrcyIsImlkIjoiNmE1OTNmZDE2OTQyMTU5YmI3YmM1NDFlIiwiaWF0IjoxNzg3OTQ2Njc0LCJleHAiOjE3ODgxMTk0NzR9.4Zz2OjO9Z0Q_Aw0K7GR9YpGlDWiwW_VYyHRn4gQFAdE
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="preview.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/apartment-01.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+###
+### Загрузить 6 фото жилья (подставь id из ответа create)
+POST http://localhost:5000/offers/6a91e84398a9bdef7ad652b9/images HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3MyMjJAZXhhbXBsZS5jb20iLCJuYW1lIjoiS2VrcyIsImlkIjoiNmE1OTNmZDE2OTQyMTU5YmI3YmM1NDFlIiwiaWF0IjoxNzg3OTQ2Njc0LCJleHAiOjE3ODgxMTk0NzR9.4Zz2OjO9Z0Q_Aw0K7GR9YpGlDWiwW_VYyHRn4gQFAdE
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="photo1.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/apartment-01.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="photo2.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/apartment-02.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="photo3.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/apartment-03.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="photo4.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/room.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="photo5.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/studio-01.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="photo6.jpg"
+Content-Type: image/jpeg
+
+< /home/mudrik86/projects/1169609-six-cities-2/markup/img/studio-photos.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+###
+
 ## Список комментариев к объявлению
 GET http://localhost:5000/offers/6a2351f5e83de56a6637136f/comments HTTP/1.1
 Content-Type: application/json

@@ -6,8 +6,8 @@ import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from '../../../../rest/index.
 import { getFullServerPath } from '../../../helpers/index.js';
 import { Config, RestSchema } from '../../config/index.js';
 
-function isObject(value: unknown): value is Record<string, object> {
-  return typeof value === 'object' && value !== null;
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 @injectable()
@@ -27,14 +27,33 @@ export class PathTransformer {
     return STATIC_RESOURCE_FIELDS.includes(property);
   }
 
+  private getPath(value: string): string {
+    const serverHost = this.config.get('HOST');
+    const serverPort = this.config.get('PORT');
+    const rootPath = this.hasDefaultImage(value) ? STATIC_FILES_ROUTE : STATIC_UPLOAD_ROUTE;
+
+    return `${getFullServerPath(serverHost, serverPort)}${rootPath}/${value}`;
+  }
+
   public execute(data: Record<string, unknown>): Record<string, unknown> {
     const stack = [data];
     while (stack.length > 0) {
       const current = stack.pop();
 
+      if (!current) {
+        continue;
+      }
+
       for (const key in current) {
         if (Object.hasOwn(current, key)) {
           const value = current[key];
+
+          if (Array.isArray(value) && this.isStaticProperty(key)) {
+            current[key] = value.map((item) =>
+              typeof item === 'string' ? this.getPath(item) : item
+            );
+            continue;
+          }
 
           if (isObject(value)) {
             stack.push(value);
@@ -42,13 +61,7 @@ export class PathTransformer {
           }
 
           if (this.isStaticProperty(key) && typeof value === 'string') {
-            const staticPath = STATIC_FILES_ROUTE;
-            const uploadPath = STATIC_UPLOAD_ROUTE;
-            const serverHost = this.config.get('HOST');
-            const serverPort = this.config.get('PORT');
-
-            const rootPath = this.hasDefaultImage(value) ? staticPath : uploadPath;
-            current[key] = `${getFullServerPath(serverHost, serverPort)}${rootPath}/${value}`;
+            current[key] = this.getPath(value);
           }
         }
       }
