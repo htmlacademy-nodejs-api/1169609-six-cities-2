@@ -10,8 +10,6 @@ import {
   MaxLength,
   Min,
   MinLength,
-  ArrayMinSize,
-  ArrayMaxSize,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -35,15 +33,6 @@ export class CreateOfferDto {
 
   @IsEnum(City, { message: CreateOfferValidationMessage.city.invalid })
   public city!: City;
-
-  @IsString({ message: CreateOfferValidationMessage.previewImage.invalidFormat })
-  public previewImage!: string;
-
-  @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
-  @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.invalidSize })
-  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.images.invalidSize })
-  @IsString({ each: true, message: CreateOfferValidationMessage.images.invalidItem })
-  public images!: string[];
 
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium!: boolean;
