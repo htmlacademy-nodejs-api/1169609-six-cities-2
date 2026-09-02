@@ -19,3 +19,4 @@ export * from './exception-filter/validation.exception-filter.js';
 export * from './exception-filter/http-error.exception-filter.js';
 export * from './middleware/parse-token.middleware.js';
 export * from './middleware/upload-files.middleware.js';
+export * from './middleware/check-owner.middleware.js';

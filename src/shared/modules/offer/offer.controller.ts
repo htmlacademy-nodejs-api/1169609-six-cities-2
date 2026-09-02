@@ -7,7 +7,8 @@ import { BaseController,
   ValidateDtoMiddleware,
   PrivateRouteMiddleware,
   UploadFileMiddleware,
-  UploadFilesMiddleware
+  UploadFilesMiddleware,
+  CheckOwnerMiddleware
 } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { City, Component } from '../../types/index.js';
@@ -56,8 +57,9 @@ export class OfferController extends BaseController {
       middlewares: [
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
-        new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDto),
       ],
     });
     this.addRoute({
@@ -68,6 +70,7 @@ export class OfferController extends BaseController {
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
       ],
     });
     this.addRoute({
