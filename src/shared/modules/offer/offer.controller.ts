@@ -98,6 +98,7 @@ export class OfferController extends BaseController {
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
         new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
       ],
     });
@@ -109,6 +110,7 @@ export class OfferController extends BaseController {
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
         new UploadFilesMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'images', OFFER_IMAGES_COUNT),
       ],
     });
