@@ -11,6 +11,7 @@
   "scripts": {
     "start": "npm run build && node ./dist/main.rest.js",
     "start:dev": "nodemon",
+    "cli": "tsx ./src/main.cli.ts",
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
