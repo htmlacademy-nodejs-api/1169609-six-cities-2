@@ -6,6 +6,9 @@ import { BaseController,
   DocumentExistsMiddleware,
   ValidateDtoMiddleware,
   PrivateRouteMiddleware,
+  UploadFileMiddleware,
+  UploadFilesMiddleware,
+  CheckOwnerMiddleware
 } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { City, Component } from '../../types/index.js';
@@ -19,6 +22,10 @@ import { ParamOfferId } from './type/param-offer-id.type.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
+import { Config, RestSchema } from '../../libs/config/index.js';
+import { UploadImageRdo } from './rdo/upload-image.rdo.js';
+import { OFFER_IMAGES_COUNT } from '../../types/index.js';
+import { UploadImagesRdo } from './rdo/upload-images.rdo.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -26,6 +33,7 @@ export class OfferController extends BaseController {
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
     @inject(Component.CommentService) private readonly commentService: CommentService,
+    @inject(Component.Config) private readonly configService: Config<RestSchema>,
   ) {
     super(logger);
 
@@ -49,8 +57,9 @@ export class OfferController extends BaseController {
       middlewares: [
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
-        new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDto),
       ],
     });
     this.addRoute({
@@ -61,6 +70,7 @@ export class OfferController extends BaseController {
         new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
       ],
     });
     this.addRoute({
@@ -79,6 +89,30 @@ export class OfferController extends BaseController {
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ]
+    });
+    this.addRoute({
+      path: '/:offerId/image',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ],
+    });
+    this.addRoute({
+      path: '/:offerId/images',
+      method: HttpMethod.Post,
+      handler: this.uploadImages,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+        new CheckOwnerMiddleware(this.offerService, 'offerId'),
+        new UploadFilesMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'images', OFFER_IMAGES_COUNT),
+      ],
     });
   }
 
@@ -139,6 +173,25 @@ export class OfferController extends BaseController {
 
     const comments = await this.commentService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
+  }
+
+  public async uploadImage(
+    { params, file }: Request<ParamOfferId>,
+    res: Response,
+  ): Promise<void> {
+    const { offerId } = params;
+    const updateDto: UpdateOfferDto = { previewImage: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageRdo, { image: file?.filename }));
+  }
+
+  public async uploadImages({ params, files }: Request<ParamOfferId>,
+    res: Response,
+  ): Promise<void> {
+    const { offerId } = params;
+    const filenames = files?.map((file) => file.filename) ?? [];
+    await this.offerService.updateById(offerId, { images: filenames });
+    this.created(res, fillDTO(UploadImagesRdo, { images: filenames }));
   }
 
 }

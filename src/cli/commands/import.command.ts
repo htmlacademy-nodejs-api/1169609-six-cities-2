@@ -48,13 +48,11 @@ export class ImportCommand implements Command {
       password: DEFAULT_USER_PASSWORD
     }, this.salt);
 
-    await this.offerService.create({
+    const createdOffer = await this.offerService.create({
       title: offer.title,
       description: offer.description,
       postDate: offer.postDate,
       city: offer.city,
-      previewImage: offer.previewImage,
-      images: [...offer.images],
       isPremium: offer.isPremium,
       housingCategory: offer.housingCategory,
       rooms: offer.rooms,
@@ -65,6 +63,10 @@ export class ImportCommand implements Command {
       location: offer.location,
     });
 
+    await this.offerService.updateById(createdOffer.id, {
+      previewImage: offer.previewImage,
+      images: [...offer.images],
+    });
   }
 
   public getName(): string {

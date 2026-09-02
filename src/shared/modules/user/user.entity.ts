@@ -20,11 +20,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true, unique: true, type: () => String })
   public email: string;
 
-  @prop({ required: false, default: 'avatar/default-avatar.jpg', type: () => String }) //TODO проверить адрес после запуска express.static
+  @prop({ required: false, default: 'default-avatar.jpg', type: () => String })
   public avatarPath?: string;
 
   @prop({ required: true, default: '', type: () => String })
-  private password: string;
+  public password?: string;
 
   @prop({ required: true, enum: UserRole, type: () => String })
   public userRole: UserRole;
